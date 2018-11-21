@@ -11,17 +11,17 @@ import CustomerAndTraining from './Components/CustomerAndTraining';
 
 class App extends Component {
   render() {
-   
+
     return (
       <div className="App">
         <header className="App-header">
-          <img style={{height:"25px",width:"25px"}}src={khem} className="App-logo" alt="CustomerDatabase" />
+          <img style={{ height: "25px", width: "25px" }} src={khem} className="App-logo" alt="CustomerDatabase" />
           <span className="App-title">Personal Trainer Database</span>
         </header>
 
         <BrowserRouter baseline>
           <div>
-            <Navigation /> 
+            <Navigation />
 
 
             <Switch>
@@ -29,7 +29,6 @@ class App extends Component {
               <Route path="/customers" component={CustomersList} />
               <Route path="/trainings" component={CustomerTrainings} />
               <Route path="/customertraining" component={CustomerAndTraining} />
-
             </Switch>
 
           </div>

@@ -10,73 +10,76 @@ import Footer from './Footer'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 class CustomersList extends Component {
-  state = { customers: []};
+  state = { customers: [] };
 
   componentDidMount() {
     this.loadCustomers();
   }
-  
- //Fetching customers from REST API.
+
+  //Fetching customers from REST API.
   loadCustomers = () => {
     fetch('https://customerrest.herokuapp.com/api/customers')
-    .then((response) => response.json()) 
-    .then((responseData) => {
-      //console.log(responseData.content.links);
-      this.setState({ 
-        customers: responseData.content}); 
-    })   
+      .then((response) => response.json())
+      .then((responseData) => {
+        //console.log(responseData.content.links);
+        this.setState({
+          customers: responseData.content
+        });
+      })
   }
-    // Create new customer
-    addCustomer(customer) {
-      fetch('https://customerrest.herokuapp.com/api/customers', 
-      {   method: 'POST', 
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(customer)
+  // Create new customer
+  addCustomer(customer) {
+    fetch('https://customerrest.herokuapp.com/api/customers',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(customer)
       })
       .then(
         toast.success("New customer added!", {
           position: toast.POSITION.TOP_LEFT
-        })         
+        })
       )
       .then(res => this.loadCustomers())
       .catch(err => console.error(err))
-    }
-    // Delete customer
-    onDelClick = (idLink) => {
-      confirmAlert({
-        title: '',
-        message: 'Are you sure you want to delete this customer?',
-        confirmLabel: 'OK',
-        cancelLabel: 'CANCEL',                            
-        onConfirm: () => {
-          fetch(idLink, {method: 'DELETE'})
+  }
+  // Delete customer
+  onDelClick = (idLink) => {
+    confirmAlert({
+      title: '',
+      message: 'Are you sure you want to delete this customer?',
+      confirmLabel: 'OK',
+      cancelLabel: 'CANCEL',
+      onConfirm: () => {
+        fetch(idLink, { method: 'DELETE' })
           .then(res => this.loadCustomers())
-          .catch(err => console.error(err)) 
-  
-          toast.success("Delete succeed", {
-            position: toast.POSITION.TOP_LEFT
-          });        
-        }
-      })   
-    }
+          .catch(err => console.error(err))
 
-// Update customer
-  updateCustomer(customer, link) {
-    fetch(link, 
-    { method: 'PUT', 
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(customer)
+        toast.success("Delete succeed", {
+          position: toast.POSITION.TOP_LEFT
+        });
+      }
     })
-    .then(
-      toast.success("Information updated", {
-        position: toast.POSITION.TOP_LEFT
-      })         
-    )
-    .catch( err => console.error(err))
+  }
+
+  // Update customer
+  updateCustomer(customer, link) {
+    fetch(link,
+      {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(customer)
+      })
+      .then(
+        toast.success("Information updated", {
+          position: toast.POSITION.TOP_LEFT
+        })
+      )
+      .catch(err => console.error(err))
   }
 
 
@@ -93,24 +96,24 @@ class CustomersList extends Component {
         }}
         dangerouslySetInnerHTML={{
           __html: this.state.customers[cellInfo.index][cellInfo.column.id]
-        }}                
+        }}
       />
     );
-  }  
+  }
 
   render() {
     return (
       <div className="App-body">
-        <div className= "text-center">
-        <InsertCustomers addCustomer={this.addCustomer} loadCustomers={this.loadCustomers}/>
+        <div className="text-center">
+          <InsertCustomers addCustomer={this.addCustomer} loadCustomers={this.loadCustomers} />
         </div>
         <ReactTable data={this.state.customers}
-        columns={[
+          columns={[
             {
-              Header:"Customer Info",
-              
+              Header: "Customer Info",
+
               columns: [
-               
+
                 {
                   Header: "First Name",
                   accessor: "firstname",
@@ -152,7 +155,7 @@ class CustomersList extends Component {
                   filterable: false,
                   width: 100,
                   accessor: 'links[0].href',
-                  Cell: ({value, row}) => (<Button bsStyle="primary" active onClick={()=>{this.updateCustomer(row, value)}}>Save</Button>)
+                  Cell: ({ value, row }) => (<Button bsStyle="primary" active onClick={() => { this.updateCustomer(row, value) }}>Save</Button>)
                 },
                 {
                   id: 'button',
@@ -160,17 +163,17 @@ class CustomersList extends Component {
                   filterable: false,
                   width: 100,
                   accessor: 'links[0].href',
-                  Cell: ({value}) => (<Button bsStyle="danger" active onClick={()=>{this.onDelClick(console.log(value))}}>Delete</Button>)
-                }            
+                  Cell: ({ value }) => (<Button bsStyle="danger" active onClick={() => { this.onDelClick(console.log(value)) }}>Delete</Button>)
+                }
               ]
             }
           ]}
           filterable
           defaultPageSize={6}
-          style={{margin: "0px 10px", height: "450px" }}
-          className="-highlight" > 
+          style={{ margin: "0px 10px", height: "450px" }}
+          className="-highlight" >
         </ReactTable>
-        <ToastContainer autoClose={2000}/>
+        <ToastContainer autoClose={2000} />
         <Footer />
       </div>
     );
