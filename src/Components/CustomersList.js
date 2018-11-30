@@ -4,13 +4,16 @@ import 'react-table/react-table.css';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import InsertCustomers from './InsertCustomers';
+import InsertTrainings from './InsertTrainings';
 import { Button } from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Footer from './Footer'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import DeleteForeverRoundedIcon from '@material-ui/icons/DeleteForeverRounded';
+
 class CustomersList extends Component {
-  state = { customers: [] };
+  state = { customers: []};
 
   componentDidMount() {
     this.loadCustomers();
@@ -21,9 +24,10 @@ class CustomersList extends Component {
     fetch('https://customerrest.herokuapp.com/api/customers')
       .then((response) => response.json())
       .then((responseData) => {
-        //console.log(responseData.content.links);
+        //console.log(responseData);
         this.setState({
-          customers: responseData.content
+          customers: responseData.content,
+       
         });
       })
   }
@@ -45,23 +49,29 @@ class CustomersList extends Component {
       .then(res => this.loadCustomers())
       .catch(err => console.error(err))
   }
-  // Delete customer
-  onDelClick = (idLink) => {
-    confirmAlert({
-      title: '',
-      message: 'Are you sure you want to delete this customer?',
-      confirmLabel: 'OK',
-      cancelLabel: 'CANCEL',
-      onConfirm: () => {
-        fetch(idLink, { method: 'DELETE' })
-          .then(res => this.loadCustomers())
-          .catch(err => console.error(err))
 
-        toast.success("Delete succeed", {
-          position: toast.POSITION.TOP_LEFT
-        });
-      }
-    })
+  onDelClick=idLink=>{
+    confirmAlert({
+      title:"",
+      message:"Sure to delete this customer?",
+      buttons:[
+        {
+          label:"Yes",
+          onClick:()=>{
+            fetch(idLink,{method:"DELETE"})
+            .then(res =>{
+              this.setState({showSnack:true,msg:'This customer data has been deleted from the database!'})
+              this.loadCustomers()
+            })
+            .catch(err=>console.error(err));
+          }
+        },
+        {
+          label:"No",
+          onClick:()=>alert("Cancelled delete operation")
+        }
+      ]
+    });
   }
 
   // Update customer
@@ -81,7 +91,24 @@ class CustomersList extends Component {
       )
       .catch(err => console.error(err))
   }
-
+  //I want to add training to customer from customer list table.When a new customer is added, on the same link,row value, his/her new training will need to be added.
+  addTraining(training) {
+    fetch('https://customerrest.herokuapp.com/api/trainings',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(training)
+      })
+      .then(
+        toast.success("New training added!", {
+          position: toast.POSITION.TOP_LEFT
+        })
+      )
+      
+      .catch(err => console.error(err))
+  }
 
   renderEditable = (cellInfo) => {
     return (
@@ -102,10 +129,11 @@ class CustomersList extends Component {
   }
 
   render() {
+
     return (
       <div className="App-body">
         <div className="text-center">
-          <InsertCustomers addCustomer={this.addCustomer} loadCustomers={this.loadCustomers} />
+          <InsertCustomers addCustomer={this.addCustomer} loadCustomers={this.loadCustomers}/>
         </div>
         <ReactTable data={this.state.customers}
           columns={[
@@ -113,14 +141,28 @@ class CustomersList extends Component {
               Header: "Customer Info",
 
               columns: [
-
                 {
-                  Header: "First Name",
-                  accessor: "firstname",
-                  Cell: this.renderEditable
+                  accessor:"links[0].href",
+                  show:false,
+                  Cell:this.renderEditable
                 },
                 {
-                  Header: "Last Name",
+                  Header:"ADD TRAINING",
+                  id: 'button',
+                  sortable: false,
+                  filterable: false,
+                  minWidth: 150,
+                  accessor: 'links[0].href',
+                  Cell: ({ value}) => (<InsertTrainings addTraining={this.addTraining} loadCustomers={this.loadCustomers} customer = {(value)}/>)
+                },
+                {
+                  Header: "FirstName",
+                  accessor: "firstname",
+                  Cell: this.renderEditable,
+                  maxWidth:200
+                },
+                {
+                  Header: "LastName",
                   accessor: "lastname",
                   Cell: this.renderEditable
                 },
@@ -163,7 +205,7 @@ class CustomersList extends Component {
                   filterable: false,
                   width: 100,
                   accessor: 'links[0].href',
-                  Cell: ({ value }) => (<Button bsStyle="danger" active onClick={() => { this.onDelClick(console.log(value)) }}>Delete</Button>)
+                  Cell: ({ value }) => (<Button bsStyle="danger" active onClick={() => { this.onDelClick(value) }}><DeleteForeverRoundedIcon/></Button>)
                 }
               ]
             }

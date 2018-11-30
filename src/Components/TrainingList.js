@@ -6,12 +6,12 @@ import 'react-confirm-alert/src/react-confirm-alert.css'
 import moment from 'moment';
 import { Button } from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import InsertTrainings from './InsertTrainings';
 import Footer from './Footer'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import DeleteIcon from '@material-ui/icons/Delete';
 
-export default class CustomerTrainings extends React.Component {
+export default class TrainingList extends React.Component {
 
   state = { trainings: [], dt: moment().format('LLLL') };
 
@@ -28,28 +28,32 @@ export default class CustomerTrainings extends React.Component {
         //console.log(responseData.content[0].links[2].href);
         this.setState({
           trainings: responseData.content,
-
         });
-
       })
   }
   // Delete training by calling its link
-  onDelClick = (idLink) => {
+  onDelClick=idLink=>{
     confirmAlert({
-      title: '',
-      message: 'Sure to delete this training?',
-      confirmLabel: 'OK',
-      cancelLabel: 'CANCEL',
-      onConfirm: () => {
-        fetch(idLink, { method: 'DELETE' })
-          .then(res => this.loadTrainings())
-          .catch(err => console.error(err))
-
-        toast.success("Delete succeed", {
-          position: toast.POSITION.TOP_LEFT
-        });
-      }
-    })
+      title:"",
+      message:"Sure to delete this training?",
+      buttons:[
+        {
+          label:"Yes",
+          onClick:()=>{
+            fetch(idLink,{method:"DELETE"})
+            .then(res =>{
+              this.setState({showSnack:true,msg:'This training data has been deleted from the database!'})
+              this.loadTrainings()//if we don't load training, it will not be deleted from database(json)
+            })
+            .catch(err=>console.error(err));
+          }
+        },
+        {
+          label:"No",
+          onClick:()=>alert("Cancelled delete operation")
+        }
+      ]
+    });
   }
   //Posting a training
   addTraining(training) {
@@ -112,8 +116,8 @@ export default class CustomerTrainings extends React.Component {
     return (
       <div className="App-body">
 
-        <div className="text-center">
-          <InsertTrainings addTraining={this.addTraining} loadTrainings={this.loadTrainings} />
+        <div className="card text-center"style = {{backgroundColor:"lightBlue"}}>
+          <h1>List of Trainings</h1>
         </div>
 
         <ReactTable data={this.state.trainings}
@@ -187,7 +191,7 @@ export default class CustomerTrainings extends React.Component {
                   filterable: false,
                   width: 100,
                   accessor: 'links[0].href',
-                  Cell: ({ value }) => (<Button bsStyle="danger" active onClick={() => { this.onDelClick(console.log(value)) }}>Delete</Button>)
+                  Cell: ({ value }) => (<Button bsStyle="danger" active onClick={() => { this.onDelClick(value)}}><DeleteIcon/></Button>)
                 }
               ]
             }
@@ -199,8 +203,6 @@ export default class CustomerTrainings extends React.Component {
         </ReactTable>
         <ToastContainer autoClose={2000} />
         <Footer />
-
-
       </div>
     );
   }

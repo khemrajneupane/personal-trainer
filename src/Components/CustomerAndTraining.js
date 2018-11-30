@@ -3,7 +3,8 @@ import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import moment from 'moment';
-import Footer from './Footer'
+import Footer from './Footer';
+
 class CustomerAndTraining extends Component {
   state = { customerTraining: [], dt: moment().format('LLLL') };
 
@@ -15,7 +16,7 @@ class CustomerAndTraining extends Component {
     fetch('https://customerrest.herokuapp.com/gettrainings')
       .then((response) => response.json())
       .then((responseData) => {
-        console.log(responseData);
+        //console.log(responseData);
         this.setState({
           customerTraining: responseData
         });
@@ -35,8 +36,9 @@ class CustomerAndTraining extends Component {
               columns: [
 
                 {
-                  Header: "First Name",
+                  Header: "FirstName",
                   accessor: "customer.firstname",
+                  maxWidth: 100,
                 },
                 {
                   Header: "Address",
@@ -45,6 +47,7 @@ class CustomerAndTraining extends Component {
                 {
                   Header: "Postcode",
                   accessor: "customer.postcode",
+                  maxWidth: 90
                 },
                 {
                   Header: "City",

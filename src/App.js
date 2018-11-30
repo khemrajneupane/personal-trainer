@@ -5,8 +5,9 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Info from './Components/Info';
 import Navigation from './Components/Navigation';
 import CustomersList from './Components/CustomersList';
-import CustomerTrainings from './Components/CustomerTrainings';
+import TrainingList from './Components/TrainingList';
 import CustomerAndTraining from './Components/CustomerAndTraining';
+import Calender from './Components/Calender';
 
 
 class App extends Component {
@@ -19,16 +20,17 @@ class App extends Component {
           <span className="App-title">Personal Trainer Database</span>
         </header>
 
+
+
         <BrowserRouter baseline>
           <div>
             <Navigation />
-
-
             <Switch>
               <Route exact path="/" component={Info} />
               <Route path="/customers" component={CustomersList} />
-              <Route path="/trainings" component={CustomerTrainings} />
+              <Route path="/trainings" component={TrainingList} />
               <Route path="/customertraining" component={CustomerAndTraining} />
+              <Route path="/calendar" component={Calender} />
             </Switch>
 
           </div>

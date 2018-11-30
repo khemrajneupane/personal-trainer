@@ -3,9 +3,10 @@ import SkyLight from 'react-skylight';
 import { Button } from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.css';
 
+
 class InsertCustomers extends React.Component {
     constructor(props) {
-        super(props);
+        super(props);//states should be exactly with the same values that we will need into the customerList table.
         this.state = { firstname: '', lastname: '', streetaddress: '', postcode: '', city: '', email: '', phone: '' };
     }
 
@@ -19,8 +20,8 @@ class InsertCustomers extends React.Component {
     handleSubmit = (event) => {
         event.preventDefault();
         var newCustomer = { firstname: this.state.firstname, lastname: this.state.lastname, streetaddress: this.state.streetaddress, postcode: this.state.postcode, city: this.state.city, email: this.state.email, phone: this.state.phone };
-        this.props.addCustomer(newCustomer);
-        this.props.loadCustomers();
+        this.props.addCustomer(newCustomer);//this method will be corresponded to addCustomer from customer list. this method takes newCustomer object with above states in parameter
+        this.props.loadCustomers();//when this below form is submittes, it needs to activate the loadCustomer function which is defined in customerList component.
         this.refs.simpleDialog.hide();
     }
 
