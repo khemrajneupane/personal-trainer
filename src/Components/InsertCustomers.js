@@ -64,7 +64,7 @@ class InsertCustomers extends React.Component {
                                 </div>
 
                                 <div className="form-group">
-                                    <button className="btn btn-success" onClick={this.handleSubmit}>Save</button>
+                                    <Button className="btn btn-success" onClick={this.handleSubmit}>Save</Button>
                                 </div>
                             </form>
                         </div>

@@ -10,7 +10,7 @@ class Navigation extends Component {
 
         return (
             <div className="jumbotron">
-            <div className="row" style={{marginLeft:150}}>
+            <div className="row" style={{marginLeft:400}}>
                 
                     <Link className="navbar-brand" to="/"></Link>
                 
