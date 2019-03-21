@@ -54,7 +54,7 @@ class App extends Component {
 
         <header className="App-header">
 
-          <img style={{ height: "25px", width: "25px" }} src={khem} className="App-logo" alt="CustomerDatabase" />
+          
           <span className="App-title">Personal Trainer Database</span>
         </header>
         <div style={{ width: "80px" }}><Button bsStyle="danger" active onClick={this.logout}>Sign out</Button></div>

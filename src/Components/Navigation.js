@@ -9,27 +9,24 @@ class Navigation extends Component {
     render() {
 
         return (
-            <div className="jumbotron">
-            <div className="row" style={{marginLeft:400}}>
+            <div className="row jumbotron">
+            
                 
-                    <Link className="navbar-brand" to="/"></Link>
+                    
                 
-                <div className="card" style={{marginRight:25}}>
-                    <Link className="nav-link" to="/"><Button bsStyle="primary" active> Info</Button></Link>
-                </div>
-                <div className="card" style={{marginRight:25}}>
-                    <Link className="nav-link" to="/customers"><Button bsStyle="primary" active> Customers</Button></Link>
-                </div>
-                <div className="card" style={{marginRight:25}}>
-                    <Link className="nav-link" to="/trainings"><Button bsStyle="primary" active> Trainings </Button></Link>
-                </div>
-                <div className="card" style={{marginRight:25}}>
-                    <Link className="nav-link" to="/customertraining"><Button bsStyle="primary" active> Custome-Training </Button></Link>
-                </div>
-                <div className="card" style={{marginRight:25}}>
-                    <Link className="nav-link" to="/calendar"><Button bsStyle="primary" active>Training-Calendar</Button></Link>
-                </div>
-            </div>
+                
+                    <Link className="nav-link col-sm-2" to="/"><Button bsStyle="primary" active> Info</Button></Link>
+               
+               
+                    <Link className="nav-link col-sm-2" to="/customers"><Button bsStyle="primary" active> Customers</Button></Link>
+                
+                    <Link className="nav-link col-sm-2" to="/trainings"><Button bsStyle="primary" active> Trainings </Button></Link>
+                
+                    <Link className="nav-link col-sm-3" to="/customertraining"><Button bsStyle="primary" active> Custome-Training </Button></Link>
+                
+                    <Link className="nav-link col-sm-3" to="/calendar"><Button bsStyle="primary" active>Training-Calendar</Button></Link>
+               
+            
             </div>
 
         )
