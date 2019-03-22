@@ -21,7 +21,7 @@
     "react-flippy": "^0.1.2",
     "react-moment": "^0.8.4",
     "react-router-dom": "^4.3.1",
-    "react-scripts": "2.1.1",
+    "react-scripts": "^2.1.8",
     "react-simple-dropdown": "^3.2.3",
     "react-skylight": "^0.5.1",
     "react-table": "^6.8.6",
@@ -34,8 +34,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "predeploy":"npm run build",
-    "deploy":"gh-pages -d build",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
